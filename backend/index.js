@@ -6,8 +6,14 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: [
+    "http://localhost:5173", // Pour les tests en local
+    "https://ton-frontend.vercel.app" // À remplacer après le déploiement
+  ],
+  methods: ["GET", "POST", "DELETE"],
+  credentials: true
+})); app.use(express.json());
 
 // Routes
 // 1. Create a new contact entry
@@ -49,7 +55,7 @@ app.post('/api/contacts', async (req, res) => {
 app.get('/api/contacts', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM contacts ORDER BY created_at DESC');
-    
+
     // Parse services JSON for each row
     const contacts = rows.map(row => {
       let parsedServices = {};
@@ -87,7 +93,11 @@ app.delete('/api/contacts/:id', async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+app.get("/", (req, res) => {
+  res.json({
+    message: "API Mass en ligne 🚀"
+  });
+});
 app.listen(PORT, () => {
   console.log(`Express Backend running on http://localhost:${PORT}`);
 });
