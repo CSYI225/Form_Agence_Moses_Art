@@ -94,20 +94,22 @@ export default function App() {
     setSubmitStatus('submitting');
 
     try {
-      const response = await fetch('http://localhost:3001/api/contacts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fullName: formData.fullName,
-          company: formData.company,
-          role: formData.role,
-          phone: formData.phone,
-          email: formData.email,
-          services: formData.services,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/contacts`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fullName: formData.fullName,
+            company: formData.company,
+            role: formData.role,
+            phone: formData.phone,
+            email: formData.email,
+            services: formData.services,
+          }),
+        });
 
       if (response.ok) {
         setSubmitStatus('success');
@@ -196,9 +198,9 @@ export default function App() {
                 </div>
               )}
               {step === 2 && (
-                <button 
-                  type="button" 
-                  className="btn-secondary" 
+                <button
+                  type="button"
+                  className="btn-secondary"
                   onClick={handleBack}
                   disabled={submitStatus === 'submitting'}
                 >
@@ -224,9 +226,9 @@ export default function App() {
                   </svg>
                 </button>
               ) : (
-                <button 
-                  type="submit" 
-                  className="btn-primary" 
+                <button
+                  type="submit"
+                  className="btn-primary"
                   onClick={handleSubmit}
                   disabled={submitStatus === 'submitting'}
                 >
