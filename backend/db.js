@@ -5,28 +5,26 @@ let pool;
 
 async function initDB() {
   try {
-    // 1. First, connect without database to make sure the database itself exists
     const connection = await mysql.createConnection({
-      host: process.env.DB_HOST || '127.0.0.1',
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || '',
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
     });
-
     const dbName = process.env.DB_NAME || 'moses_art';
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
     await connection.end();
 
-    // 2. Now create the pool pointing to the target database
     pool = mysql.createPool({
-      host: process.env.DB_HOST || '127.0.0.1',
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || '',
-      database: dbName,
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
     });
-
     // 3. Create the contacts table if it does not exist
     const createTableQuery = `
       CREATE TABLE IF NOT EXISTS contacts (
