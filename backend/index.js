@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors({
   origin: [
     "http://localhost:5173", // Pour les tests en local
-    "https://ton-frontend.vercel.app" // À remplacer après le déploiement
+    "https://form-agence-moses-art.vercel.app" // À remplacer après le déploiement
   ],
   methods: ["GET", "POST", "DELETE"],
   credentials: true
