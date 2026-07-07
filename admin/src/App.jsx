@@ -33,7 +33,7 @@ export default function App() {
   const fetchContacts = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3001/api/contacts');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contacts`);
       if (!response.ok) {
         throw new Error('Erreur de communication avec le serveur.');
       }
@@ -209,9 +209,9 @@ export default function App() {
       ) : error ? (
         <div style={{ textAlign: 'center', padding: '40px', color: '#e52b2b' }}>
           <p>{error}</p>
-          <button 
-            onClick={fetchContacts} 
-            className="btn-website" 
+          <button
+            onClick={fetchContacts}
+            className="btn-website"
             style={{ marginTop: '15px', animation: 'none' }}
           >
             Actualiser
@@ -256,8 +256,8 @@ export default function App() {
                       <div className="services-cell">
                         {selectedServices.length > 0 ? (
                           selectedServices.map((service, idx) => (
-                            <span 
-                              key={idx} 
+                            <span
+                              key={idx}
                               className={`service-pill ${service === 'Aucun' ? 'none' : ''}`}
                             >
                               {service}
@@ -276,8 +276,8 @@ export default function App() {
                     <td>
                       <div className="actions-cell">
                         {/* Details button */}
-                        <button 
-                          className="btn-icon" 
+                        <button
+                          className="btn-icon"
                           title="Détails"
                           onClick={() => setSelectedContact(contact)}
                         >
@@ -288,8 +288,8 @@ export default function App() {
                           </svg>
                         </button>
                         {/* Delete button */}
-                        <button 
-                          className="btn-icon delete" 
+                        <button
+                          className="btn-icon delete"
                           title="Supprimer"
                           onClick={() => handleDelete(contact.id, contact.fullName)}
                         >
@@ -345,8 +345,8 @@ export default function App() {
                   <div className="services-cell" style={{ marginTop: '8px', maxWidth: 'none' }}>
                     {getSelectedServices(selectedContact.services).length > 0 ? (
                       getSelectedServices(selectedContact.services).map((service, idx) => (
-                        <span 
-                          key={idx} 
+                        <span
+                          key={idx}
                           className={`service-pill ${service === 'Aucun' ? 'none' : ''}`}
                         >
                           {service}
