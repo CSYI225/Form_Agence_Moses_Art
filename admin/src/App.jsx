@@ -29,25 +29,6 @@ export default function App() {
   const [error, setError] = useState(null);
   const [selectedContact, setSelectedContact] = useState(null);
 
-  // Fetch registrations from Express backend
-  const fetchContacts = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contacts`);
-      if (!response.ok) {
-        throw new Error('Erreur de communication avec le serveur.');
-      }
-      const data = await response.json();
-      setContacts(data);
-      setError(null);
-    } catch (err) {
-      console.error(err);
-      setError('Impossible de récupérer la liste des contacts. Assurez-vous que le serveur backend est démarré.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (isLoggedIn) {
       fetchContacts();
@@ -81,23 +62,27 @@ export default function App() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/api/contacts/${id}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
-        setContacts(prev => prev.filter(c => c.id !== id));
-        if (selectedContact?.id === id) {
-          setSelectedContact(null);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/contacts/${id}`,
+        {
+          method: 'DELETE',
         }
-      } else {
-        alert('Erreur lors de la suppression.');
+      );
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la suppression.');
+      }
+
+      setContacts(prev => prev.filter(contact => contact.id !== id));
+
+      if (selectedContact?.id === id) {
+        setSelectedContact(null);
       }
     } catch (err) {
       console.error(err);
-      alert('Erreur réseau lors de la suppression.');
+      alert("Une erreur est survenue lors de la suppression du contact.");
     }
   };
-
   // Helper to get selected service labels as text array
   const getSelectedServices = (servicesObj) => {
     if (!servicesObj || typeof servicesObj !== 'object') return [];
