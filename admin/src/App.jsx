@@ -54,7 +54,32 @@ export default function App() {
     setUsername('');
     setPassword('');
   };
+  // Fetch registrations from Express backend
+  const fetchContacts = async () => {
+    try {
+      setLoading(true);
 
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/contacts`
+      );
+
+      if (!response.ok) {
+        throw new Error("Erreur de communication avec le serveur.");
+      }
+
+      const data = await response.json();
+
+      setContacts(data);
+      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError(
+        "Une erreur est survenue lors de la récupération des contacts."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
   // Delete a contact entry
   const handleDelete = async (id, name) => {
     if (!window.confirm(`Voulez-vous vraiment supprimer l'enregistrement de ${name} ?`)) {
